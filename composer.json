@@ -1,0 +1,21 @@
+{
+    "name": "igorsa/marlin-imersion.loc",
+    "description": "Тестовый проект Погружение в PHP",
+    "authors": [
+        {
+            "name": "Igor Kas",
+            "email": "kasigor555@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "require-dev": {
+      "filp/whoops": "^2.6"
+    },
+    "autoload": {
+      "psr-4": {
+        "App\\": "app/"
+      }
+    }
+}
