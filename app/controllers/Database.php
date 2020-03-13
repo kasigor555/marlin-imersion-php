@@ -141,4 +141,32 @@ class Database
 
     return false;
   }
+
+  /**
+   * Метод обновления записей
+   */
+  public function update($table, $id, $fields = [])
+  {
+    $set = '';
+    foreach($fields as $key => $field) {
+      $set .= "{$key} = ?, ";
+    }
+    $set = rtrim($set, ', ');
+
+    $sql = "UPDATE {$table} SET {$set} WHERE id = {$id}";
+
+    if (!$this->query($sql, $fields)->getError()) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * 
+   */
+  public function first()
+  {
+    return $this->getResult()[0];
+  }
 }
