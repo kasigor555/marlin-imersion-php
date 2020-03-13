@@ -24,7 +24,7 @@ $products = Database::getInstace()->get('products', ['id', '>=', "1"]);
 //                                             'product_status' => '1'
 //                                             ]);
 
-echo $products->first()->product_name;
+echo $products->getFirst()->product_name;
 
 // if ($products->getError()) {
 //   echo "We have an error <br>";

@@ -165,7 +165,7 @@ class Database
   /**
    * 
    */
-  public function first()
+  public function getFirst()
   {
     return $this->getResult()[0];
   }
