@@ -11,7 +11,7 @@ class Database
   private function __construct()
   {
     try {
-      $this->pdo = new PDO("mysql:host=" . Config::get('mysql.host') . "; dbname=product_catalog", 'root', '');
+      $this->pdo = new PDO("mysql:host=" . Config::get('mysql.host') . "; dbname=" . Config::get('mysql.dbname'), Config::get('mysql.username'), Config::get('mysql.password'));
     } catch (PDOException $e) {
       throw new Exception($e->getMessage());
     }
