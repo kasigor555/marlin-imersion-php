@@ -11,7 +11,7 @@ class Database
   private function __construct()
   {
     try {
-      $this->pdo = new PDO('mysql:host=localhost; dbname=product_catalog', 'root', '');
+      $this->pdo = new PDO("mysql:host=" . Config::get('mysql.host') . "; dbname=product_catalog", 'root', '');
     } catch (PDOException $e) {
       throw new Exception($e->getMessage());
     }
@@ -148,7 +148,7 @@ class Database
   public function update($table, $id, $fields = [])
   {
     $set = '';
-    foreach($fields as $key => $field) {
+    foreach ($fields as $key => $field) {
       $set .= "{$key} = ?, ";
     }
     $set = rtrim($set, ', ');

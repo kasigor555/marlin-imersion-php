@@ -1,23 +1,17 @@
 <?php
-require_once 'config/db.php';
+require_once '../app/controllers/Database.php';
+require_once '../app/controllers/Config.php';
+
 /**
- * Подключение к БД
+ * Параметры подключение к БД
  */
+$GLOBALS['config'] = [
+  'mysql' => [
+    'hosts' => 'localhost',
+    'username' => 'root',
+    'password' => '',
+    'dbname' => 'product_catalog'
+  ]
+];
 
-function connect()
-{
-  $servername = SERVERNAME; // локалхост
-  $username = USERNAME; // имя пользователя
-  $password = PASSWORD; // пароль если существует
-  $dbname = DBNAME; // база данных
-
-  try{
-    $db = new PDO("mysql:host=$servername; dbname=$dbname", $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Успешное подключение";
-  } catch (PDOException $e) {
-    die('Подключение не удалось: ' . $e->getMessage());
-  }
-  
-  return $db;
-}
+echo Config::get('mysql.dbname');

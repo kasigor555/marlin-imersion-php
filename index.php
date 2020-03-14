@@ -1,6 +1,7 @@
 <?php
 
-require 'app/controllers/Database.php';
+require_once 'app/controllers/Database.php';
+require_once 'app/controllers/Config.php';
 
 // $products = Database::getInstace()->query("SELECT * FROM products WHERE id IN (?, ?)", ['1', '2']);
 $products = Database::getInstace()->get('products', ['id', '>=', "1"]);
@@ -24,12 +25,13 @@ $products = Database::getInstace()->get('products', ['id', '>=', "1"]);
 //                                             'product_status' => '1'
 //                                             ]);
 
-echo $products->getFirst()->product_name;
+// echo $products->getFirst()->product_name;
 
-// if ($products->getError()) {
-//   echo "We have an error <br>";
-// } else {
-//   foreach ($products->getResult() as $product) {
-//     echo $product->product_name . '<br>';
-//   }
-// }
+if ($products->getError()) {
+  echo "We have an error <br>";
+} else {
+  foreach ($products->getResult() as $product) {
+    echo $product->product_name . '<br>';
+  }
+}
+
