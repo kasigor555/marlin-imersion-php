@@ -5,7 +5,7 @@
  */
 $GLOBALS['config'] = [
   'mysql' => [
-    'hosts' => 'localhost',
+    'host' => 'localhost',
     'username' => 'root',
     'password' => '',
     'dbname' => 'product_catalog'

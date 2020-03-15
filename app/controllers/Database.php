@@ -11,7 +11,12 @@ class Database
   private function __construct()
   {
     try {
-      $this->pdo = new PDO("mysql:host=" . Config::get('mysql.host') . "; dbname=" . Config::get('mysql.dbname'), Config::get('mysql.username'), Config::get('mysql.password'));
+      $this->pdo = new PDO(
+        'mysql:host=' . Config::get('mysql.host') . ';dbname=' . Config::get('mysql.dbname'), 
+        Config::get('mysql.username'), 
+        Config::get('mysql.password') 
+      );
+      // $this->pdo = new PDO("mysql:host=localhost; dbname=product_catalog", 'root', '' );
     } catch (PDOException $e) {
       throw new Exception($e->getMessage());
     }
@@ -23,7 +28,7 @@ class Database
   public static function getInstace()
   {
     if (!isset(self::$instace)) {
-      self::$instace = new Database;
+      self::$instace = new Database();
     }
 
     return self::$instace;

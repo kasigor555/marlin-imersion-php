@@ -3,15 +3,9 @@
 require_once 'app/controllers/Database.php';
 require_once 'app/controllers/Config.php';
 require_once 'config/db-connect.php';
+require_once 'app/controllers/Input.php';
+require_once 'app/controllers/Validate.php';
 
-// $GLOBALS['config'] = [
-//   'mysql' => [
-//     'hosts' => 'localhost',
-//     'username' => 'root',
-//     'password' => '',
-//     'dbname' => 'product_catalog'
-//   ]
-// ];
 
 // $products = Database::getInstace()->query("SELECT * FROM products WHERE id IN (?, ?)", ['1', '2']);
 // $products = Database::getInstace()->get('products', ['id', '>=', "1"]);
@@ -35,7 +29,7 @@ require_once 'config/db-connect.php';
 //                                             'product_status' => '1'
 //                                             ]);
 
-// echo $products->getFirst()->product_name;
+//  echo $products->getFirst()->product_name;
 
 // if ($products->getError()) {
 //   echo "We have an error <br>";
@@ -45,4 +39,57 @@ require_once 'config/db-connect.php';
 //   }
 // }
 
-echo Config::get('mysql.dbname');
+//  echo Config::get('mysql.dbname');
+
+
+if (Input::exist()) {
+  $validate = new Validate();
+
+  $validation = $validate->check($_POST, [
+    'username' => [
+      'required' => true,
+      'min' => 2,
+      'max' => 15,
+      'unique' => 'users'
+    ],
+    'password' => [
+      'required' => true,
+      'min' => 3
+    ],
+    'password_again' => [
+      'required' => true,
+      'matches' => 'password'
+    ]
+  ]);
+
+  if ($validation->passed()) {
+    echo 'passed';
+  } else {
+    foreach ($validation->errors() as $error) {
+      echo $error . "<br>";
+    }
+  }
+}
+?>
+
+<h3>Test Form</h3>
+<form action="" method="post">
+  <div class="field">
+    <label for="username">Username</label>
+    <input type="text" name="username" value="<?php echo Input::get('username') ?>">
+  </div>
+
+  <div class="field">
+    <label for="">Password</label>
+    <input type="password" name="password">
+  </div>
+
+  <div class="field">
+    <label for="">Repeat password</label>
+    <input type="password" name="password_again">
+  </div>
+
+  <div class="field">
+    <button type="submit">Submit</button>
+  </div>
+</form>
