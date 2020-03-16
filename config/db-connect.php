@@ -9,5 +9,8 @@ $GLOBALS['config'] = [
     'username' => 'root',
     'password' => '',
     'dbname' => 'product_catalog'
-  ]
+  ],
+  'session' => [
+    'token_name' => 'token',
+  ],
 ];

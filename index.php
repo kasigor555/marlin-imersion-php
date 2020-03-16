@@ -1,10 +1,13 @@
 <?php
+session_start();
 
 require_once 'app/controllers/Database.php';
 require_once 'app/controllers/Config.php';
 require_once 'config/db-connect.php';
 require_once 'app/controllers/Input.php';
 require_once 'app/controllers/Validate.php';
+require_once 'app/controllers/Session.php';
+require_once 'app/controllers/Token.php';
 
 
 // $products = Database::getInstace()->query("SELECT * FROM products WHERE id IN (?, ?)", ['1', '2']);
@@ -43,30 +46,32 @@ require_once 'app/controllers/Validate.php';
 
 
 if (Input::exist()) {
-  $validate = new Validate();
+  if (Token::check(Input::get('token'))) {
+    $validate = new Validate();
 
-  $validation = $validate->check($_POST, [
-    'username' => [
-      'required' => true,
-      'min' => 2,
-      'max' => 15,
-      'unique' => 'users'
-    ],
-    'password' => [
-      'required' => true,
-      'min' => 3
-    ],
-    'password_again' => [
-      'required' => true,
-      'matches' => 'password'
-    ]
-  ]);
+    $validation = $validate->check($_POST, [
+      'username' => [
+        'required' => true,
+        'min' => 2,
+        'max' => 15,
+        'unique' => 'users'
+      ],
+      'password' => [
+        'required' => true,
+        'min' => 3
+      ],
+      'password_again' => [
+        'required' => true,
+        'matches' => 'password'
+      ]
+    ]);
 
-  if ($validation->passed()) {
-    echo 'passed';
-  } else {
-    foreach ($validation->errors() as $error) {
-      echo $error . "<br>";
+    if ($validation->passed()) {
+      echo 'passed';
+    } else {
+      foreach ($validation->errors() as $error) {
+        echo $error . "<br>";
+      }
     }
   }
 }
@@ -89,6 +94,7 @@ if (Input::exist()) {
     <input type="password" name="password_again">
   </div>
 
+  <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
   <div class="field">
     <button type="submit">Submit</button>
   </div>
