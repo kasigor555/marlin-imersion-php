@@ -67,7 +67,9 @@ if (Input::exist()) {
     ]);
 
     if ($validation->passed()) {
-      echo 'passed';
+      // echo 'passed';
+      Session::flash('success', 'register success');
+      // header('Location: test.php');
     } else {
       foreach ($validation->errors() as $error) {
         echo $error . "<br>";
@@ -77,8 +79,11 @@ if (Input::exist()) {
 }
 ?>
 
+<?php echo Session::flash('success'); ?>
+
 <h3>Test Form</h3>
 <form action="" method="post">
+
   <div class="field">
     <label for="username">Username</label>
     <input type="text" name="username" value="<?php echo Input::get('username') ?>">
