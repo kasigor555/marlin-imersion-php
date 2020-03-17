@@ -6,7 +6,6 @@ class Config
   {
     if ($path) {
       $config = $GLOBALS['config'];
-
       $path = explode('.', $path);
 
       foreach ($path as $item) {

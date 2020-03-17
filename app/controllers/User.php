@@ -10,7 +10,7 @@ class User
   }
 
   /**
-   * 
+   * Запись пользователя в БД
    */
   public function create($fields = [])
   {

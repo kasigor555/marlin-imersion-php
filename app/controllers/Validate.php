@@ -38,11 +38,17 @@ class Validate
                 $this->addError("{$rule_value} must match {$item}");
               }
               break;
-            
+
             case 'unique':
               $check = $this->db->get($rule_value, [$item, '=', $value]);
               if ($check->getCount()) {
                 $this->addError("{$item} already exists.");
+              }
+              break;
+
+            case 'email':
+              if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                $this->addError("{$item} is not an email");
               }
               break;
           }
