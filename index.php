@@ -8,6 +8,7 @@ require_once 'app/controllers/Input.php';
 require_once 'app/controllers/Validate.php';
 require_once 'app/controllers/Session.php';
 require_once 'app/controllers/Token.php';
+require_once 'app/controllers/User.php';
 
 
 // $products = Database::getInstace()->query("SELECT * FROM products WHERE id IN (?, ?)", ['1', '2']);
@@ -68,6 +69,12 @@ if (Input::exist()) {
 
     if ($validation->passed()) {
       // echo 'passed';
+      $user = new User;
+      $user->create([
+        'username' => Input::get('username'),
+        'password' => password_hash(Input::get('password'), PASSWORD_DEFAULT),
+      ]);
+
       Session::flash('success', 'register success');
       // header('Location: test.php');
     } else {

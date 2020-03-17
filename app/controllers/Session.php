@@ -48,8 +48,6 @@ class Session
       return $session;
     } else {
       self::put($name, $str);
-    }      
-    
+    }
   }
-
 }

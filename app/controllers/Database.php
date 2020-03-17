@@ -12,9 +12,9 @@ class Database
   {
     try {
       $this->pdo = new PDO(
-        'mysql:host=' . Config::get('mysql.host') . ';dbname=' . Config::get('mysql.dbname'), 
-        Config::get('mysql.username'), 
-        Config::get('mysql.password') 
+        'mysql:host=' . Config::get('mysql.host') . ';dbname=' . Config::get('mysql.dbname'),
+        Config::get('mysql.username'),
+        Config::get('mysql.password')
       );
       // $this->pdo = new PDO("mysql:host=localhost; dbname=product_catalog", 'root', '' );
     } catch (PDOException $e) {
@@ -87,7 +87,7 @@ class Database
 
 
   /**
-   * 
+   * Получение записей
    */
   public function get($table, $where = [])
   {
@@ -95,7 +95,7 @@ class Database
   }
 
   /**
-   * 
+   * Удаление записей
    */
   public function delete($table, $where = [])
   {
@@ -103,7 +103,7 @@ class Database
   }
 
   /**
-   * 
+   * Метод генерации даействия в таблице
    */
   public function action($action, $table, $where = [])
   {
@@ -168,7 +168,7 @@ class Database
   }
 
   /**
-   * 
+   * Получить первую запись из выбранных
    */
   public function getFirst()
   {
