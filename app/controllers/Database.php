@@ -24,6 +24,8 @@ class Database
 
   /**
    * Создание эеземпляра подключения
+   * 
+   * @return object
    */
   public static function getInstace()
   {
@@ -36,6 +38,8 @@ class Database
 
   /**
    * Выполнение запроса
+   * 
+   * @return this
    */
   public function query($sql, $params = [])
   {
@@ -63,6 +67,8 @@ class Database
 
   /**
    * Вывод ошибок
+   * 
+   * @return array $error
    */
   public function getError()
   {
@@ -88,6 +94,10 @@ class Database
 
   /**
    * Получение записей
+   * 
+   * @param string dbname
+   * @param array conditons
+   * @return string query
    */
   public function get($table, $where = [])
   {

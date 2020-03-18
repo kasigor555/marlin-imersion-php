@@ -1,3 +1,10 @@
 <?php
+require_once 'init.php';
 
-echo '123';
+// var_dump(Session::get('user'));
+echo "<pre>";
+print_r(Session::get(Config::get('session.user_session')));
+echo "<hr>";
+print_r($_SESSION);
+echo "</pre>";
+exit;

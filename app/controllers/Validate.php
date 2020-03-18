@@ -66,6 +66,7 @@ class Validate
   public function addError($error)
   {
     $this->errors[] = $error;
+    Session::put('errors', $this->errors);
   }
 
   public function errors()

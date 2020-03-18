@@ -94,6 +94,9 @@ if (Input::exist()) {
             </div>
           </form>
         </div>
+        <div class="card-footer">
+          <a href="login.php" class="card-link">Login</a>
+        </div>
 
       </div>
     </div>
