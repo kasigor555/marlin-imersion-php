@@ -2,15 +2,30 @@
 
 class User
 {
-  private $db, $data, $session_name;
+  private $db, $data, $session_name, $isLoggedIn;
 
   /**
    * Созжание инкземпляра сояденения с БД
    */
-  public function __construct()
+  public function __construct($user = null)
   {
     $this->db = Database::getInstace();
     $this->session_name = Config::get('session.user_session');
+
+    if (!$user) {
+
+      if (Session::exists($this->session_name)) {
+        $user = Session::get($this->session_name);
+
+        if ($this->find($user)) {
+          $this->isLoggedIn = true;
+        } else {
+          //
+        }        
+      }
+    } else {
+      $this->find($user);
+    }
   }
 
   /**
@@ -46,9 +61,14 @@ class User
   /**
    * 
    */
-  public function find($email = null)
+  public function find($value = null)
   {
-    $this->data = $this->db->get('users', ['email', '=', $email])->getFirst(); // есть ли такой email в БД?
+    if (is_numeric(($value))) {
+      $this->data = $this->db->get('users', ['id', '=', $value])->getFirst(); // есть ли такой id в БД?
+    } else {
+      $this->data = $this->db->get('users', ['email', '=', $value])->getFirst(); // есть ли такой email в БД?
+    }
+    
 
     return $this->data ? true : false;
   }
@@ -59,5 +79,13 @@ class User
   public function getData()
   {
     return $this->data;
+  }
+
+  /**
+   * 
+   */
+  public function isLoggedIn()
+  {
+    return $this->isLoggedIn;
   }
 }

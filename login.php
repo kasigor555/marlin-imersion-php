@@ -26,7 +26,7 @@ if (Input::exist()) { // проверить, отправлена ли форм�
       
 
       if ($login) {
-        echo "Login successful";
+        Redirect::to('index.php');
       } else {
         echo "Login failed";
       }
