@@ -61,6 +61,14 @@ class User
   /**
    * 
    */
+  public function logout()
+  {
+    return Session::delete($this->session_name);
+  }
+
+  /**
+   * 
+   */
   public function find($value = null)
   {
     if (is_numeric(($value))) {
