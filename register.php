@@ -63,7 +63,7 @@ if (Input::exist()) {
     <div class="row justify-content-md-center">
       <div class="card text-center">
         <div class="card-header">
-          <h3>Test Form</h3>
+          <h3>Registration</h3>
         </div>
         <div class="card-body">
           <form action="" method="post">

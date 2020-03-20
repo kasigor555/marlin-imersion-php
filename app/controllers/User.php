@@ -43,7 +43,7 @@ class User
    */
   public function login($email = null, $password = null, $remember = false)
   {
-    if (!$email && !$password) { // проверка, если нет имайла и пароля, но пользователь существует, (удалена проверка $this->exists();)
+    if (!$email && !$password && $this->exists()) { // проверка, если нет имайла и пароля, но пользователь существует, (удалена проверка $this->exists();)
       Session::put($this->session_name, $this->getData()->id);
     } else {
 
@@ -78,15 +78,7 @@ class User
   }
 
   /**
-   * 
-   */
-  public function logout()
-  {
-    return Session::delete($this->session_name);
-  }
-
-  /**
-   * 
+   * Найти пользователя по id или email
    */
   public function find($value = null)
   {
@@ -94,14 +86,13 @@ class User
       $this->data = $this->db->get('users', ['id', '=', $value])->getFirst(); // есть ли такой id в БД?
     } else {
       $this->data = $this->db->get('users', ['email', '=', $value])->getFirst(); // есть ли такой email в БД?
-    }
-    
+    }  
 
     return $this->data ? true : false;
   }
 
   /**
-   * 
+   * Получить данные
    */
   public function getData()
   {
@@ -109,10 +100,41 @@ class User
   }
 
   /**
-   * 
+   * Проверка, авторизован ли пользователь
    */
   public function isLoggedIn()
   {
     return $this->isLoggedIn;
   }
+
+  /**
+   * Выход из аккаунта
+   */
+  public function logout()
+  {
+    $this->db->delete('user_session', ['user_id', '=', $this->getData()->id]);
+    Cookie::delete(Config::get('cookie.cookie_name'));
+    Session::delete($this->session_name);
+  }
+
+  /**
+   * Проверка на существование пользователя
+   */
+  public function exists()
+  {
+    return (!empty($this->getData())) ? true : false;
+  }
+
+  /**
+   * Обновление данных профиля пользователя
+   */
+  public function update($fields = [], $id = null)
+  {
+    if (!$id && $this->isLoggedIn()) {
+      $id = $this->getData()->id;
+    }
+
+    $this->db->update('users', $id, $fields);
+  }
+
 }
