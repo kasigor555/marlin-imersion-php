@@ -39,17 +39,36 @@ class User
   }
 
   /**
-   * 
+   * Авторизайия пользователя
    */
-  public function login($email = null, $password = null)
+  public function login($email = null, $password = null, $remember = false)
   {
-    if ($email) { // если в форму введён email
+    if (!$email && !$password) { // проверка, если нет имайла и пароля, но пользователь существует, (удалена проверка $this->exists();)
+      Session::put($this->session_name, $this->getData()->id);
+    } else {
 
-      $user = $this->find($email);
+      $user = $this->find($email); // найти пользователя по имэйлу
 
       if ($user) {
-        if (password_verify($password, $this->getData()->password)) {
+        if (password_verify($password, $this->getData()->password)) { // проверка пароля
           Session::put($this->session_name, $this->getData()->id);
+
+          if ($remember) { // если активет чекбокс 
+            $hash = hash('sha256', uniqid()); // создать уникальный хэш
+            $hashCheck = $this->db->get('user_sessions', ['user_id', '=', $this->getData()->id]); // проверить, еслть ли хэш в БД
+
+            if (!$hashCheck->getCount()) { // если в БД нет хеша, записать
+              $this->db->insert('user_sessions', [
+                'user_id' => $this->getData()->id,
+                'hash' => $hash,
+              ]);
+            } else {
+              $hash = $hashCheck->getFirst()->hash; // если есть, извлечь хэш
+            }
+
+            Cookie::put(Config::get('cookie.cookie_name'), $hash, Config::get('cookie.cookie_expiry')); // и записать хэш в куки
+          }
+
           return true;
         }
       }

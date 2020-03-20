@@ -10,6 +10,7 @@ require_once 'app/controllers/Session.php';
 require_once 'app/controllers/Token.php';
 require_once 'app/controllers/User.php';
 require_once 'app/controllers/Redirect.php';
+require_once 'app/controllers/Cookie.php';
 
 
 // $products = Database::getInstace()->query("SELECT * FROM products WHERE id IN (?, ?)", ['1', '2']);
@@ -45,3 +46,14 @@ require_once 'app/controllers/Redirect.php';
 // }
 
 //  echo Config::get('mysql.dbname');
+
+
+if (Cookie::exists(Config::get('cookie.cookie_name')) && !Session::exists(Config::get('session.user_session'))) {
+  $hash = Cookie::get(Config::get('cookie.cookie_name'));
+  $hashCheck = Database::getInstace()->get('user_sessions', ['hash', '=', $hash]);
+
+  if ($hashCheck->getCount()) {
+    $user = new User($hashCheck->getFirst()->user_id);
+    $user->login();
+  }
+}

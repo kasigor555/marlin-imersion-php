@@ -19,11 +19,12 @@ if (Input::exist()) { // проверить, отправлена ли форм�
 
     if ($validation->passed()) {
       $user = new User;
-      $login = $user->login(Input::get('email'), Input::get('password'));
+      $remember = (Input::get('remember')) === 'on' ? true : false; // если чекбокс отмечен, вернуть true
+      $login = $user->login(Input::get('email'), Input::get('password'), $remember);
       // echo "<pre>";
-      // print_r($user->login(Input::get('email'), Input::get('password')));
+      // var_dump($remember);
       // echo "</pre>";
-      
+
 
       if ($login) {
         Redirect::to('index.php');
@@ -50,7 +51,7 @@ if (Input::exist()) { // проверить, отправлена ли форм�
 <body>
   <div class="container">
 
-    
+
 
     <div class="row justify-content-md-center">
       <div class="card text-center">
@@ -70,6 +71,14 @@ if (Input::exist()) { // проверить, отправлена ли форм�
               <input class="form-control" type="text" name="password">
             </div>
 
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                <label class="form-check-label" for="remember">
+                  Remember Me
+                </label>
+              </div>
+            </div>
             <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
             <div class="form-group">
               <button type="submit" class="btn btn-primary">Submit</button>
