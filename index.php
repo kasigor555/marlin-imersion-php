@@ -24,7 +24,12 @@ if ($user->isLoggedIn()) {
   echo "<br>";
   echo "<a href='logout.php'>Logout</a><br>";
   echo "<a href='update.php'>Update profile</a><br>";
-  echo "<a href='changepassword.php'>Change password</a>";
+  echo "<a href='changepassword.php'>Change password</a><br>";
+
+  if ($user->hasPermissions('admin')) {
+    echo "You are Admin.";
+  }
+
 } else {
   echo "<a href='login.php'>Login</a> or <a href='register.php'>Registration</a>";
 }

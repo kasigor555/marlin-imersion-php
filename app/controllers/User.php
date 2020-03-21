@@ -135,4 +135,27 @@ class User
 
     $this->db->update('users', $id, $fields);
   }
+
+  /**
+   * Проверка прав доступа (роли). Принадлежность к граппе
+   */
+  public function hasPermissions($key = null)
+  {
+
+    if ($key) {
+      $group = $this->db->get('groups', ['id', '=', $this->getData()->group_id]);
+
+      if ($group->getCount()) {
+        $permissions = $group->getFirst()->permissions;
+        $permissions = json_decode($permissions, true);
+
+        if ($permissions[$key]) {
+          var_dump($permissions[$key]);
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 }
