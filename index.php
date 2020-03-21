@@ -9,6 +9,8 @@ require_once 'init.php';
 // echo "</pre>";
 // exit;
 
+echo Session::flash("success") . "<br>";
+
 $user = new User;
 
 // echo $user->getData()->username;
@@ -16,11 +18,13 @@ $user = new User;
 // echo $anotherrUser->getData()->username;
 // echo "<hr>";
 
+
 if ($user->isLoggedIn()) {
   echo "Hi {$user->getData()->username}!";
   echo "<br>";
   echo "<a href='logout.php'>Logout</a><br>";
-  echo "<a href='update.php'>Update profile</a>";
+  echo "<a href='update.php'>Update profile</a><br>";
+  echo "<a href='changepassword.php'>Change password</a>";
 } else {
   echo "<a href='login.php'>Login</a> or <a href='register.php'>Registration</a>";
 }

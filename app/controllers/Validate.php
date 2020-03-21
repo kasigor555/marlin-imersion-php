@@ -16,6 +16,7 @@ class Validate
       foreach ($rules as $rule => $rule_value) {
 
         $value = $source[$item];
+        // var_dump($source[$item]);
 
         if ($rule == 'required' && empty($value)) {
           $this->addError("{$item} is required!");

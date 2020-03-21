@@ -5,23 +5,22 @@ class User
   private $db, $data, $session_name, $isLoggedIn;
 
   /**
-   * Созжание инкземпляра сояденения с БД
+   * Создание инкземпляра сояденения с БД
    */
   public function __construct($user = null)
   {
-    $this->db = Database::getInstace();
-    $this->session_name = Config::get('session.user_session');
+    $this->db = Database::getInstace(); // создать экземпляр соеденения с БД
+    $this->session_name = Config::get('session.user_session'); // получить имя сессии из конфига
+    $this->cookie_name = Config::get('cookie.cookie_name'); // получить имя куки из конфига
 
-    if (!$user) {
+    if (!$user) { // 
 
-      if (Session::exists($this->session_name)) {
-        $user = Session::get($this->session_name);
+      if (Session::exists($this->session_name)) { // если сессионная переменная уже существует
+        $user = Session::get($this->session_name); // получить значение этой сессиионной переменой
 
-        if ($this->find($user)) {
-          $this->isLoggedIn = true;
-        } else {
-          //
-        }        
+        if ($this->find($user)) { // найти этого пользователя
+          $this->isLoggedIn = true; // отметить, что пользователь залогинен
+        }
       }
     } else {
       $this->find($user);
@@ -43,7 +42,7 @@ class User
    */
   public function login($email = null, $password = null, $remember = false)
   {
-    if (!$email && !$password && $this->exists()) { // проверка, если нет имайла и пароля, но пользователь существует, (удалена проверка $this->exists();)
+    if (!$email && !$password && $this->exists()) { // проверка, если нет имайла и пароля, но пользователь существует
       Session::put($this->session_name, $this->getData()->id);
     } else {
 
@@ -66,7 +65,7 @@ class User
               $hash = $hashCheck->getFirst()->hash; // если есть, извлечь хэш
             }
 
-            Cookie::put(Config::get('cookie.cookie_name'), $hash, Config::get('cookie.cookie_expiry')); // и записать хэш в куки
+            Cookie::put($this->cookie_name, $hash, Config::get('cookie.cookie_expiry')); // и записать хэш в куки
           }
 
           return true;
@@ -86,7 +85,7 @@ class User
       $this->data = $this->db->get('users', ['id', '=', $value])->getFirst(); // есть ли такой id в БД?
     } else {
       $this->data = $this->db->get('users', ['email', '=', $value])->getFirst(); // есть ли такой email в БД?
-    }  
+    }
 
     return $this->data ? true : false;
   }
@@ -136,5 +135,4 @@ class User
 
     $this->db->update('users', $id, $fields);
   }
-
 }

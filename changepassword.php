@@ -6,21 +6,35 @@ $user = new User();
 if (Input::exist()) {
   if (Token::check(Input::get('token'))) {
 
-
     $validation = new Validate();
 
     $validation->check($_POST, [
-      'username' => [
+      'current_password' => [
         'required' => true,
-        'min' => 2,
+        'min' => 3,
+      ],
+      'new_password' => [
+        'required' => true,
+        'min' => 6,
+
+      ],
+      'new_password_again' => [
+        'required' => true,
+        'min' => 6,
+        'matches' => 'new_password'
       ]
     ]);
 
     if ($validation->passed()) {
-      $user->update([
-        'username' => Input::get('username'),
-      ]);
-      Redirect::to('update.php');
+      if (password_verify(Input::get('current_password'), $user->getData()->password)) {
+        $user->update([
+          'password' => password_hash(Input::get('new_password'), PASSWORD_DEFAULT),
+        ]);
+        Session::flash('success', 'Password has bin updated!');
+        Redirect::to('index.php');
+      } else {
+        echo "Invalid current password";
+      }
     } else {
       foreach ($validation->errors() as $error) {
         echo $error . "<br>";
@@ -49,8 +63,18 @@ if (Input::exist()) {
           <form action="" method="post">
 
             <div class="form-group">
-              <label for="username">Username</label>
-              <input class="form-control" type="text" name="username" id="username" value="<?php echo $user->getData()->username; ?>">
+              <label for="username">Current password</label>
+              <input class="form-control" type="text" name="current_password" id="current_password">
+            </div>
+
+            <div class="form-group">
+              <label for="username">New password</label>
+              <input class="form-control" type="text" name="new_password" id="new_password">
+            </div>
+
+            <div class="form-group">
+              <label for="username">New password again</label>
+              <input class="form-control" type="text" name="new_password_again" id="new_password_again">
             </div>
 
             <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
@@ -60,13 +84,11 @@ if (Input::exist()) {
           </form>
         </div>
         <div class="card-footer">
-          <a href='changepassword.php'>Change password</a>
+          <a href='update.php'>Update profile</a>
         </div>
       </div>
     </div>
   </div>
-
-
 
 </body>
 
