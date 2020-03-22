@@ -148,9 +148,8 @@ class User
       if ($group->getCount()) {
         $permissions = $group->getFirst()->permissions;
         $permissions = json_decode($permissions, true);
-
-        if ($permissions[$key]) {
-          var_dump($permissions[$key]);
+       
+        if ($permissions != '' && $permissions[$key]) {
           return true;
         }
       }
