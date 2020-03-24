@@ -1,94 +1,87 @@
 <?php
 require_once 'init.php';
 
-// var_dump(Session::get('user'));
-// echo "<pre>";
-// print_r(Session::get(Config::get('session.user_session')));
-// echo "<hr>";
-// print_r($_SESSION);
-// echo "</pre>";
-// exit;
+// $db = new Database();
 
-echo Session::flash("success") . "<br>";
+$users = Database::getInstace()->get('users', ['id', '>=', '1'])->getResult();
 
-$user = new User;
-
-// echo $user->getData()->username;
-// echo "<br>";
-// echo $anotherrUser->getData()->username;
-// echo "<hr>";
-
-
-// if ($user->isLoggedIn()) {
-//   echo "Hi {$user->getData()->username}!";
-//   echo "<br>";
-//   echo "<a href='logout.php'>Logout</a><br>";
-//   echo "<a href='update.php'>Update profile</a><br>";
-//   echo "<a href='changepassword.php'>Change password</a><br>";
-
-//   if ($user->hasPermissions('admin')) {
-//     echo "You are Admin.";
-//   }
-// } else {
-//   echo "<a href='login.php'>Login</a> or <a href='register.php'>Registration</a>";
-// }
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title> </title>
+  <title>Profile</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
 </head>
 
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">User Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="<?= $_SERVER['REQUEST_URI']; ?>">Главная</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="login.php" class="nav-link">Войти</a>
+        </li>
+        <li class="nav-item">
+          <a href="register.php" class="nav-link">Регистрация</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
   <div class="container">
-    <div class="row justify-content-md-center">
-
-      <?php if ($user->isLoggedIn()) { ?>
-
-        <div class="card mb-3" style="max-width: 540px;">
-          <div class="row no-gutters">
-            <div class="col-md-4">
-              <img src="images/User_No_Image-180.png" class="card-img m-2" alt='<?php echo "Hi {$user->getData()->username}!"; ?>'>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title"><?php echo "Hi {$user->getData()->username}!"; ?></h5>
-
-                <?php if ($user->hasPermissions('admin')) {
-                  echo '<p class="card-text"><small class="text-muted">You are Admin.</small></p>';
-                } ?>
-
-                <p class="card-text">This is your profile card.</p>
-                <ul>
-                  <li><?php echo "<a href='logout.php'>Logout</a>"; ?></li>
-                  <li><?php echo "<a href='update.php'>Update profile</a>"; ?></li>
-                  <li><?php echo "<a href='changepassword.php'>Change password</a>"; ?></li>
-                </ul>
-              </div>
-            </div>
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="jumbotron">
+          <h1 class="display-4">Привет, мир!</h1>
+          <p class="lead">Это дипломный проект по разработке на PHP. На этой странице список наших пользователей.</p>
+          <hr class="my-4">
+          <p>Чтобы стать частью нашего проекта вы можете пройти регистрацию.</p>
+          <a class="btn btn-primary btn-lg" href="register.php" role="button">Зарегистрироваться</a>
         </div>
+      </div>
+    </div>
 
-      <?php } else { ?>
-        <div class="card text-center" style="width: 18rem;">
-          <div class="card-body">
-            <p><a href='login.php' class="btn btn-primary">Login</a></p>
-            <p>OR</p>
-            <p><a href='register.php' class="btn btn-primary">Registration</a></p>
-          </div>
-        </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Пользователи</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Имя</th>
+              <th>Email</th>
+              <th>Дата</th>
+            </tr>
+          </thead>
 
-      <?php } ?>
-
+          <tbody>
+            <?php foreach ($users as $user) : ?>
+              <tr>
+                <td><?= $user->id; ?></td>
+                <td><a href="user_profile.php?id=<?= $user->id; ?>"><?= $user->username; ?></a></td>
+                <td><?= $user->email; ?></td>
+                <td><?= $user->created; ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-
-
-
 </body>
 
 </html>

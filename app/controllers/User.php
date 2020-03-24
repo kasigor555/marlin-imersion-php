@@ -90,6 +90,7 @@ class User
     return $this->data ? true : false;
   }
 
+
   /**
    * Получить данные
    */

@@ -93,15 +93,29 @@ class Database
 
 
   /**
-   * Получение записей
+   * Получение записей с условием
    * 
-   * @param string dbname
-   * @param array conditons
+   * @param string $table table name
+   * @param array $where conditons
    * @return string query
    */
   public function get($table, $where = [])
   {
     return $this->action('SELECT *', $table, $where);
+  }
+
+  /**
+   * Получение всех записей
+   */
+  public function getAll($table)
+  {
+    $sql = "SELECT * FROM {$table}";
+
+    if (!$this->query($sql)->getError()) {
+      return $this;
+    }
+
+    return false;
   }
 
   /**
