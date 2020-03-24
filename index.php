@@ -5,43 +5,12 @@ require_once 'init.php';
 
 $users = Database::getInstace()->get('users', ['id', '>=', '1'])->getResult();
 
+require_once 'includes/layouts/header.php';
+require_once 'includes/layouts/top-nav.php';
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Profile</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
-</head>
-
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">User Management</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="<?= $_SERVER['REQUEST_URI']; ?>">Главная</a>
-        </li>
-      </ul>
-
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a href="login.php" class="nav-link">Войти</a>
-        </li>
-        <li class="nav-item">
-          <a href="register.php" class="nav-link">Регистрация</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
+<section>
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -64,7 +33,7 @@ $users = Database::getInstace()->get('users', ['id', '>=', '1'])->getResult();
               <th>ID</th>
               <th>Имя</th>
               <th>Email</th>
-              <th>Дата</th>
+              <th>Дата регистранции</th>
             </tr>
           </thead>
 
@@ -74,7 +43,7 @@ $users = Database::getInstace()->get('users', ['id', '>=', '1'])->getResult();
                 <td><?= $user->id; ?></td>
                 <td><a href="user_profile.php?id=<?= $user->id; ?>"><?= $user->username; ?></a></td>
                 <td><?= $user->email; ?></td>
-                <td><?= $user->created; ?></td>
+                <td><?= date('d/m/Y', strtotime($user->created)); ?></td>
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -82,6 +51,8 @@ $users = Database::getInstace()->get('users', ['id', '>=', '1'])->getResult();
       </div>
     </div>
   </div>
-</body>
+</section>
 
-</html>
+<?php
+require_once 'includes/layouts/footer.php';
+?>

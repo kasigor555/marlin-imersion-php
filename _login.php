@@ -1,9 +1,6 @@
 <?php
 require_once 'init.php';
 
-$errors = null;
-$alert = null;
-
 if (Input::exist()) { // проверить, отправлена ли форма, по умолчанию type='post'
 
   if (Token::check(Input::get('token'))) { // проверяем корректность токена
@@ -32,40 +29,36 @@ if (Input::exist()) { // проверить, отправлена ли форм�
       if ($login) {
         Redirect::to('index.php');
       } else {
-        $alert = "Login failed";
+        echo "Login failed";
       }
     } else {
-      $errors = $validation->errors();
+      foreach ($validation->errors() as $error) {
+        echo $error . "<br>";
+      }
     }
   }
 }
-require_once 'includes/layouts/header.php';
 ?>
 
-<section>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
   <div class="container">
+
+
+
     <div class="row justify-content-md-center">
       <div class="card text-center">
         <div class="card-header">
-          <img class="mb-4" src="images/apple-touch-icon.png" alt="" width="72" height="72">
-          <h3>Авторизация</h3>
+          <h3>Login</h3>
         </div>
         <div class="card-body">
-
-          <?php if ($errors) : ?>
-            <div class="alert alert-danger">
-              <?php foreach ($errors as $error) : ?>
-                <p><?= $error; ?></p>
-              <?php endforeach; ?>
-            </div>
-          <?php endif ?>
-
-          <?php if ($alert) : ?>
-            <div class="alert alert-success">
-              <p><?= $alert; ?></p>
-            </div>
-          <?php endif ?>
-
           <form action="" method="post">
 
             <div class="form-group">
@@ -82,13 +75,13 @@ require_once 'includes/layouts/header.php';
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="remember" name="remember">
                 <label class="form-check-label" for="remember">
-                  Запамнить меня
+                  Remember Me
                 </label>
               </div>
             </div>
             <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
             <div class="form-group">
-              <button type="submit" class="btn btn-lg btn-primary btn-block">Войти</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>
         </div>
@@ -98,8 +91,9 @@ require_once 'includes/layouts/header.php';
       </div>
     </div>
   </div>
-</section>
 
-<?php
-require_once 'includes/layouts/footer.php';
-?>
+
+
+</body>
+
+</html>
