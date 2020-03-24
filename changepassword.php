@@ -57,7 +57,7 @@ if (Input::exist()) {
     <div class="row justify-content-md-center">
       <div class="card text-center">
         <div class="card-header">
-          <h3>Update Profile</h3>
+          <h3>Change password</h3>
         </div>
         <div class="card-body">
           <form action="" method="post">
