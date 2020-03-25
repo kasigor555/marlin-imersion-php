@@ -18,6 +18,9 @@
 ├──	init.php // точка сбора всех компонентов
 ├──	user_profile.php // страница с описанием полей пользователя по id
 │
+├── DB_DUMP/
+│   └── product_catalog.sql // дамп дазы данных
+│
 ├── admin/
 │   ├── edit.php
 │   └── index.php

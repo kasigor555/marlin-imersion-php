@@ -31,7 +31,7 @@ require_once '../includes/layouts/top-nav.php';
             <td><?= $user->email; ?></td>
             <td>
               <a href="#" class="btn btn-success">Назначить администратором</a>
-              <a href="user_profile.php?id=<?= $user->id; ?>" class="btn btn-info">Посмотреть</a>
+              <a href="../user_profile.php?id=<?= $user->id; ?>" class="btn btn-info">Посмотреть</a>
               <a href="#" class="btn btn-warning">Редактировать</a>
               <a href="#" class="btn btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
             </td>
