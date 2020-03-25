@@ -22,8 +22,10 @@
 │   └── product_catalog.sql // дамп дазы данных
 │
 ├── admin/
-│   ├── edit.php
-│   └── index.php
+│   ├── edit.php // редактирование пользователей
+│   ├── delete.php // удаление пользователя
+│   ├── changerole.php // изменение роли
+│   └── index.php // вывод списка пользователей для администрирования
 │   
 ├── app/
 │   └── controllers
