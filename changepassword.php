@@ -1,6 +1,9 @@
 <?php
 require_once 'init.php';
 
+$errors = null;
+$alert = null;
+
 $user = new User();
 
 if (Input::exist()) {
@@ -33,63 +36,74 @@ if (Input::exist()) {
         Session::flash('success', 'Password has bin updated!');
         Redirect::to('index.php');
       } else {
-        echo "Invalid current password";
+        $alert = "Invalid current password";
       }
     } else {
-      foreach ($validation->errors() as $error) {
-        echo $error . "<br>";
-      }
+      $errors = $validation->errors();
     }
   }
 }
+
+require_once 'includes/layouts/header.php';
+require_once 'includes/layouts/top-nav.php';
+
 ?>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title> </title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-</head>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Изменить пароль пользователя - <?php echo $user->getData()->username; ?></h1>
 
-<body>
-  <div class="container">
-    <div class="row justify-content-md-center">
-      <div class="card text-center">
-        <div class="card-header">
-          <h3>Change password</h3>
+      <?php if (Session::exists('success') && Session::get('success') != '') : ?>
+        <div class="alert alert-info">
+          <p><?= Session::flash("success"); ?></p>
         </div>
-        <div class="card-body">
-          <form action="" method="post">
+      <?php endif ?>
 
-            <div class="form-group">
-              <label for="username">Current password</label>
-              <input class="form-control" type="text" name="current_password" id="current_password">
-            </div>
-
-            <div class="form-group">
-              <label for="username">New password</label>
-              <input class="form-control" type="text" name="new_password" id="new_password">
-            </div>
-
-            <div class="form-group">
-              <label for="username">New password again</label>
-              <input class="form-control" type="text" name="new_password_again" id="new_password_again">
-            </div>
-
-            <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
+      <?php if ($alert) : ?>
+        <div class="alert alert-success">
+          <p><?= $alert; ?></p>
         </div>
-        <div class="card-footer">
-          <a href='update.php'>Update profile</a>
+      <?php endif ?>
+
+      <?php if ($errors) : ?>
+        <div class="alert alert-danger">
+          <?php foreach ($errors as $error) : ?>
+            <p><?= $error; ?></p>
+          <?php endforeach; ?>
         </div>
-      </div>
+      <?php endif ?>
+
+      <ul>
+        <li><a href="profile.php">Изменить профиль</a></li>
+      </ul>
+      <form action="" class="form" method="post">
+        <div class="form-group">
+          <label for="current_password">Текущий пароль</label>
+          <input type="password" id="current_password" name="current_password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="new_password">Новый пароль</label>
+          <input type="password" id="new_password" name="new_password" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="new_password_again">Повторите новый пароль</label>
+          <input type="password" id="new_password_again" name="new_password_again" class="form-control">
+        </div>
+
+        <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
+        <div class="form-group">
+          <button class="btn btn-warning">Изменить</button>
+        </div>
+      </form>
+
+
     </div>
   </div>
+</div>
 
-</body>
+<?php
+require_once 'includes/layouts/footer.php';
 
-</html>
+
+?>

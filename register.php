@@ -1,6 +1,9 @@
 <?php
 require_once 'init.php';
 
+$errors = null;
+$alert = null;
+
 if (Input::exist()) {
   if (Token::check(Input::get('token'))) {
     $validate = new Validate();
@@ -35,75 +38,68 @@ if (Input::exist()) {
         'email' => Input::get('email'),
       ]);
 
-      Session::flash('success', 'register success');
+      $alert = Session::flash('success', 'register success');
       // header('Location: test.php');
       // Redirect::to('test.php');
     } else {
-      foreach ($validation->errors() as $error) {
-        echo $error . "<br>";
-      }
+      $errors = $validation->errors();
     }
   }
 }
+
+require_once 'includes/layouts/header.php';
 ?>
+<main role="main" class="flex-shrink-0">
+  <section>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="card text-center">
+          <div class="card-header">
+            <img class="mb-4" src="images/apple-touch-icon.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+          </div>
+          <div class="card-body">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title> </title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-</head>
+            <?php if ($errors) : ?>
+              <div class="alert alert-danger">
+                <?php foreach ($errors as $error) : ?>
+                  <p><?= $error; ?></p>
+                <?php endforeach; ?>
+              </div>
+            <?php endif ?>
 
-<body>
-  <div class="container">
+            <?php if ($alert) : ?>
+              <div class="alert alert-success">
+                <p><?= $alert; ?></p>
+              </div>
+            <?php endif ?>
 
-    <?php echo Session::flash('success'); ?>
+            <form class="form-signin" method="post">
 
-    <div class="row justify-content-md-center">
-      <div class="card text-center">
-        <div class="card-header">
-          <h3>Registration</h3>
-        </div>
-        <div class="card-body">
-          <form action="" method="post">
+              <div class="form-group">
+                <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo Input::get('email') ?>">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Ваше имя" value="<?php echo Input::get('username') ?>">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Пароль">
+              </div>
 
-            <div class="form-group">
-              <label for="username">Username</label>
-              <input class="form-control" type="text" name="username" value="<?php echo Input::get('username') ?>">
-            </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password_again" placeholder="Повторите пароль">
+              </div>
 
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input class="form-control" type="text" name="email" aria-describedby="emailHelp" value="<?php echo Input::get('email') ?>">
-            </div>
-
-            <div class="form-group">
-              <label for="">Password</label>
-              <input class="form-control" type="password" name="password">
-            </div>
-
-            <div class="form-group">
-              <label for="">Repeat password</label>
-              <input class="form-control" type="password" name="password_again">
-            </div>
-
-            <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </div>
-        <div class="card-footer">
-          <a href="login.php" class="card-link">Login</a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-
-</body>
-
-</html>
+              <input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
+              <div class="checkbox mb-3">
+                <label for="iagree" class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="iagree" name="iagree"> Согласен со всеми правилами
+                </label>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
+            </form>
+  </section>
+</main>
+<?php
+require_once 'includes/layouts/footer.php';
+?>

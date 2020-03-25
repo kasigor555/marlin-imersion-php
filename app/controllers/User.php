@@ -5,7 +5,7 @@ class User
   private $db, $data, $session_name, $isLoggedIn;
 
   /**
-   * Создание инкземпляра сояденения с БД
+   * Создание экземпляра сояденения с БД
    */
   public function __construct($user = null)
   {

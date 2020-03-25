@@ -4,11 +4,9 @@
 
 ?>
 
-<footer>
+<footer class="footer mt-auto py-3">
   <div class="container">
-    <div class="row justify-content-md-center">
-      <p class="mt-5 mb-3 text-muted">&copy; 2017 - <?php echo date('Y'); ?></p>
-    </div>
+    <span class="text-muted">&copy; 2017 - <?php echo date('Y'); ?></span>
   </div>
 </footer>
 
