@@ -1,8 +1,6 @@
 <?php
 require_once 'init.php';
 
-// $db = new Database();
-
 $users = Database::getInstace()->get('users', ['id', '>=', '1'])->getResult();
 
 require_once 'includes/layouts/header.php';
